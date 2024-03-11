@@ -1,6 +1,7 @@
 Scriptname _m3HealSpellRedirectorEffect extends ActiveMagicEffect  
 
-_m3TargetHolderScript Property TargetHolderScript Auto
+ReferenceAlias Property LeftAlias Auto
+ReferenceAlias Property RightAlias Auto
 
 Event OnEffectStart(Actor akTarget, Actor akCaster)
 	int hand = HealerScriptExtender.WhichHandCastMe(self)
@@ -8,17 +9,17 @@ Event OnEffectStart(Actor akTarget, Actor akCaster)
 		return
 	endif
 
-	if hand == -1
-		Actor actorRef = TargetHolderScript.LeftTarget
-		if !actorRef
-			return
-		endif
-		TargetHolderScript.LeftSpell.Cast(akCaster, actorRef)
-	elseif hand == 1
-		Actor actorRef = TargetHolderScript.RightTarget
-		if !actorRef
-			return
-		endif
-		TargetHolderScript.RightSpell.Cast(akCaster, actorRef)
+	Spell realSpell = none
+	Actor actorRef
+	if hand == -1 &&  LeftAlias.GetActorReference()
+		realSpell = HealerScriptExtender.GetRealSpell(akCaster.GetEquippedSpell(0))
+		actorRef =  LeftAlias.GetActorReference()
+	elseif hand == 1 && RightAlias.GetActorReference()
+		 realSpell = HealerScriptExtender.GetRealSpell(akCaster.GetEquippedSpell(1))
+		actorRef =  RightAlias.GetActorReference()
+	endif
+
+	if actorRef && realSpell && akCaster.GetDistance(actorRef) <= 1024
+		realSpell.Cast(akCaster, actorRef)
 	endif
 endEvent

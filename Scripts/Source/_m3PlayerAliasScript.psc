@@ -1,9 +1,10 @@
 Scriptname _m3PlayerAliasScript extends ReferenceAlias  
 
-_m3TargetHolderScript Property TargetHolderScript Auto
 Keyword Property FakeSpellKeyword Auto
 SPELL Property LeftMarkerSpell  Auto 
 SPELL Property RightMarkerSpell  Auto  
+ReferenceAlias Property LeftRefAlias  Auto  
+ReferenceAlias Property RightRefAlias  Auto  
 
 Event OnObjectEquipped(Form akBaseObject, ObjectReference akReference)
 	if akBaseObject.HasKeyword(FakeSpellKeyword)
@@ -16,29 +17,27 @@ Event OnObjectEquipped(Form akBaseObject, ObjectReference akReference)
 		return
 	endif
 
-	if theSpell == LeftMarkerSpell && TargetHolderScript.LeftTarget
-		Debug.Notification("[Healer] " + TargetHolderScript.LeftTarget.GetLeveledActorBase().GetName() + " is no longer marked.")
-		TargetHolderScript.LeftSpell = none
-		TargetHolderScript.LeftTarget = none
+	Actor leftActor =  LeftRefAlias.GetActorReference()
+	Actor rightActor = RightRefAlias.GetActorReference()
+
+	if theSpell == LeftMarkerSpell && leftActor 
+		Debug.Notification("[Healer] " + leftActor.GetLeveledActorBase().GetName() + " is no longer marked.")
+		LeftRefAlias.Clear()
 		return
-	elseif theSpell == RightMarkerSpell
-		Debug.Notification("[Healer] " + TargetHolderScript.RightTarget.GetLeveledActorBase().GetName() + " is no longer marked.")
-		TargetHolderScript.RightSpell = none
-		TargetHolderScript.RightTarget = none
+	elseif theSpell == RightMarkerSpell && rightActor 
+		Debug.Notification("[Healer] " + rightActor.GetLeveledActorBase().GetName() + " is no longer marked.")
+		RightRefAlias.Clear()
 		return
 	endif
 
 	Actor myself = self.GetReference() as Actor
 
-	if myself.GetEquippedSpell(0) == theSpell && TargetHolderScript.LeftTarget != none
- 		TargetHolderScript.LeftSpell = theSpell
+	if myself.GetEquippedSpell(0) == theSpell && leftActor != none
 		Spell fakeSpell = HealerScriptExtender.GetFakeSpell(theSpell)
 		if fakeSpell
 			myself.EquipSpell(fakeSpell, 0)
 		endif
-
-	elseif myself.GetEquippedSpell(1) == theSpell && TargetHolderScript.RightTarget != none
- 		TargetHolderScript.RightSpell = theSpell
+	elseif myself.GetEquippedSpell(1) == theSpell && rightActor != none
 		Spell fakeSpell = HealerScriptExtender.GetFakeSpell(theSpell)
 		if fakeSpell
 			myself.EquipSpell(fakeSpell, 1)
@@ -46,22 +45,4 @@ Event OnObjectEquipped(Form akBaseObject, ObjectReference akReference)
 	endIf
 endEvent
 
-Event OnObjectUnequipped(Form akBaseObject, ObjectReference akReference)
-	if !akBaseObject.HasKeyword(FakeSpellKeyword)
-		return
-	endif
-
-	Spell theSpell = akBaseObject as Spell
-	if !theSpell
-		return
-	endif
-
-	Actor myself = self.GetReference() as Actor
-
-	if myself.GetEquippedSpell(0) != theSpell
- 		TargetHolderScript.LeftSpell = none
-	elseif myself.GetEquippedSpell(1) != theSpell
- 		TargetHolderScript.RightSpell = none
-	endIf
-endEvent
 
