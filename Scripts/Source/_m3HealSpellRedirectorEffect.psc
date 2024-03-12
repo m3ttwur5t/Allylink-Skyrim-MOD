@@ -18,8 +18,11 @@ Event OnEffectStart(Actor akTarget, Actor akCaster)
 		realSpell = AllylinkScriptExtender.GetRealSpell(akCaster.GetEquippedSpell(1))
 		actorRef =  RightAlias.GetActorReference()
 	endif
+	
+	
+	ConsoleUtil.PrintMessage("[Allylink] Deliver " + realSpell.GetName() + " to " + actorRef.GetActorBase().GetName())
 
 	if actorRef && realSpell && akCaster.GetDistance(actorRef) <= 1024
-		realSpell.Cast(akCaster, actorRef)
+		realSpell.Cast(actorRef)
 	endif
 endEvent
