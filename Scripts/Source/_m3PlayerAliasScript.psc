@@ -5,6 +5,11 @@ SPELL Property LeftMarkerSpell  Auto
 SPELL Property RightMarkerSpell  Auto  
 ReferenceAlias Property LeftRefAlias  Auto  
 ReferenceAlias Property RightRefAlias  Auto  
+Perk Property NullifierPerk  Auto  
+
+Event OnInit()
+	self.GetActorReference().AddPerk(NullifierPerk)
+EndEvent
 
 Event OnObjectEquipped(Form akBaseObject, ObjectReference akReference)
 	if akBaseObject.HasKeyword(FakeSpellKeyword)
@@ -43,5 +48,4 @@ Event OnObjectEquipped(Form akBaseObject, ObjectReference akReference)
 		endif
 	endIf
 endEvent
-
 
