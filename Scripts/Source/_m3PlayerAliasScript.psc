@@ -11,7 +11,6 @@ Event OnObjectEquipped(Form akBaseObject, ObjectReference akReference)
 		return
 	endif
 
-	Utility.Wait(0.1)
 	Spell theSpell = akBaseObject as Spell
 	if !theSpell
 		return
@@ -21,24 +20,24 @@ Event OnObjectEquipped(Form akBaseObject, ObjectReference akReference)
 	Actor rightActor = RightRefAlias.GetActorReference()
 
 	if theSpell == LeftMarkerSpell && leftActor 
-		Debug.Notification("[Healer] " + leftActor.GetLeveledActorBase().GetName() + " is no longer marked.")
+		Debug.Notification("[AllyLink-Left] " + leftActor.GetLeveledActorBase().GetName() + " is no longer linked.")
 		LeftRefAlias.Clear()
 		return
 	elseif theSpell == RightMarkerSpell && rightActor 
-		Debug.Notification("[Healer] " + rightActor.GetLeveledActorBase().GetName() + " is no longer marked.")
+		Debug.Notification("[AllyLink-Right] " + rightActor.GetLeveledActorBase().GetName() + " is no longer linked.")
 		RightRefAlias.Clear()
 		return
 	endif
 
 	Actor myself = self.GetReference() as Actor
-
+	
 	if myself.GetEquippedSpell(0) == theSpell && leftActor != none
-		Spell fakeSpell = HealerScriptExtender.GetFakeSpell(theSpell)
+		Spell fakeSpell = AllylinkScriptExtender.GetFakeSpell(theSpell)
 		if fakeSpell
 			myself.EquipSpell(fakeSpell, 0)
 		endif
 	elseif myself.GetEquippedSpell(1) == theSpell && rightActor != none
-		Spell fakeSpell = HealerScriptExtender.GetFakeSpell(theSpell)
+		Spell fakeSpell = AllylinkScriptExtender.GetFakeSpell(theSpell)
 		if fakeSpell
 			myself.EquipSpell(fakeSpell, 1)
 		endif

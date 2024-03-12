@@ -4,7 +4,7 @@ ReferenceAlias Property LeftAlias Auto
 ReferenceAlias Property RightAlias Auto
 
 Event OnEffectStart(Actor akTarget, Actor akCaster)
-	int hand = HealerScriptExtender.WhichHandCastMe(self)
+	int hand = AllylinkScriptExtender.WhichHandCastMe(self)
 	if hand == 0
 		return
 	endif
@@ -12,10 +12,10 @@ Event OnEffectStart(Actor akTarget, Actor akCaster)
 	Spell realSpell = none
 	Actor actorRef
 	if hand == -1 &&  LeftAlias.GetActorReference()
-		realSpell = HealerScriptExtender.GetRealSpell(akCaster.GetEquippedSpell(0))
+		realSpell = AllylinkScriptExtender.GetRealSpell(akCaster.GetEquippedSpell(0))
 		actorRef =  LeftAlias.GetActorReference()
 	elseif hand == 1 && RightAlias.GetActorReference()
-		 realSpell = HealerScriptExtender.GetRealSpell(akCaster.GetEquippedSpell(1))
+		realSpell = AllylinkScriptExtender.GetRealSpell(akCaster.GetEquippedSpell(1))
 		actorRef =  RightAlias.GetActorReference()
 	endif
 
