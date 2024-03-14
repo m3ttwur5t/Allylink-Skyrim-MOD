@@ -1,6 +1,7 @@
 Scriptname _m3PlayerAliasScript extends ReferenceAlias  
 
-Keyword Property FakeSpellKeyword Auto
+Keyword Property FakeSpellKeywordFF Auto
+
 SPELL Property LeftMarkerSpell  Auto 
 SPELL Property RightMarkerSpell  Auto  
 ReferenceAlias Property LeftRefAlias  Auto  
@@ -12,12 +13,12 @@ Event OnInit()
 EndEvent
 
 Event OnObjectEquipped(Form akBaseObject, ObjectReference akReference)
-	if akBaseObject.HasKeyword(FakeSpellKeyword)
+	Spell theSpell = akBaseObject as Spell
+	if !theSpell
 		return
 	endif
 
-	Spell theSpell = akBaseObject as Spell
-	if !theSpell
+	if akBaseObject.HasKeyword(FakeSpellKeywordFF)
 		return
 	endif
 
