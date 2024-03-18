@@ -19,21 +19,18 @@ Event OnEffectStart(Actor akTarget, Actor akCaster)
 		return
 	endif
 	
-	Actor actorRef
-	if hand == -1 &&  LeftAlias.GetActorReference()
-		actorRef =  LeftAlias.GetActorReference()
-	elseif hand == 1 && RightAlias.GetActorReference()
-		actorRef =  RightAlias.GetActorReference()
+	Actor redirTarget
+	if hand == -1
+		redirTarget = LeftAlias.GetActorReference()
+	elseif hand == 1
+		redirTarget = RightAlias.GetActorReference()
 	endif
-	if !actorRef
-		return
-	endif
-	
-	ConsoleUtil.PrintMessage("[Allylink] Deliver " + realSpell.GetName() + " to " + actorRef.GetActorBase().GetName())
 
-	if akTarget.GetDistance(actorRef) <= 1024
-		realSpell.RemoteCast(akTarget, akTarget, actorRef)
+	if redirTarget && akTarget.GetDistance(redirTarget) <= 1024 && akTarget.HasLOS(redirTarget)
+		ConsoleUtil.PrintMessage("[Allylink] Deliver " + realSpell.GetName() + " to " + redirTarget.GetActorBase().GetName())
+		realSpell.RemoteCast(akTarget, akTarget, redirTarget)
 	else
+		realSpell.RemoteCast(akTarget, akTarget, akTarget)
 		Debug.Notification("Linked ally is not in range...")
 	endif
 endEvent
