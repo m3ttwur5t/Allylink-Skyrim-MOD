@@ -1,4 +1,4 @@
-Scriptname _m3PlayerAliasScript extends ReferenceAlias  
+Scriptname _m3PlayerAliasMain extends ReferenceAlias  
 
 Keyword Property FakeSpellKeywordFF Auto
 
@@ -38,12 +38,12 @@ Event OnObjectEquipped(Form akBaseObject, ObjectReference akReference)
 	Actor myself = self.GetReference() as Actor
 	
 	if myself.GetEquippedSpell(0) == theSpell && leftActor != none
-		Spell fakeSpell = AllylinkScriptExtender.GetFakeSpell(theSpell)
+		Spell fakeSpell = AllylinkScriptExtender.GetFakeSpell(theSpell, -1)
 		if fakeSpell
 			myself.EquipSpell(fakeSpell, 0)
 		endif
 	elseif myself.GetEquippedSpell(1) == theSpell && rightActor != none
-		Spell fakeSpell = AllylinkScriptExtender.GetFakeSpell(theSpell)
+		Spell fakeSpell = AllylinkScriptExtender.GetFakeSpell(theSpell, 1)
 		if fakeSpell
 			myself.EquipSpell(fakeSpell, 1)
 		endif

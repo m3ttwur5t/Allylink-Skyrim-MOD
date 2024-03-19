@@ -1,4 +1,4 @@
-Scriptname _m3RightSpellRedirectionEffectScript extends ActiveMagicEffect  
+Scriptname _m3RedirectionRightMarker extends ActiveMagicEffect  
 
 Faction Property CurrentFollowerFaction  Auto  
 ReferenceAlias Property RightAlias Auto

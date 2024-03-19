@@ -1,14 +1,8 @@
-Scriptname _m3HealSpellRedirectorEffect extends ActiveMagicEffect  
+Scriptname _m3RedirectionLeft extends ActiveMagicEffect  
 
 ReferenceAlias Property LeftAlias Auto
-ReferenceAlias Property RightAlias Auto
 
 Event OnEffectStart(Actor akTarget, Actor akCaster)
-	int hand = AllylinkScriptExtender.WhichHandCastMe(self)
-	if hand == 0
-		return
-	endif
-
 	Spell fakeSpell = AllylinkScriptExtender.WhichSpellCastMe(self)
 	if !fakeSpell
 		return
@@ -19,12 +13,7 @@ Event OnEffectStart(Actor akTarget, Actor akCaster)
 		return
 	endif
 	
-	Actor redirTarget
-	if hand == -1
-		redirTarget = LeftAlias.GetActorReference()
-	elseif hand == 1
-		redirTarget = RightAlias.GetActorReference()
-	endif
+	Actor redirTarget = LeftAlias.GetActorReference()
 
 	if redirTarget && akTarget.GetDistance(redirTarget) <= 1024 && akTarget.HasLOS(redirTarget)
 		ConsoleUtil.PrintMessage("[Allylink] Deliver " + realSpell.GetName() + " to " + redirTarget.GetActorBase().GetName())
