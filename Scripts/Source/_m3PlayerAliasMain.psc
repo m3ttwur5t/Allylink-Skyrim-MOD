@@ -8,6 +8,9 @@ ReferenceAlias Property LeftRefAlias  Auto
 ReferenceAlias Property RightRefAlias  Auto  
 Perk Property NullifierPerk  Auto  
 
+Spell PreviousLeftFakeSpell
+Spell PreviousRightFakeSpell
+
 Event OnInit()
 	self.GetActorReference().AddPerk(NullifierPerk)
 EndEvent
@@ -15,6 +18,11 @@ EndEvent
 Event OnObjectEquipped(Form akBaseObject, ObjectReference akReference)
 	Spell theSpell = akBaseObject as Spell
 	if !theSpell
+		if akBaseObject == myself.GetEquippedObject(0)
+			PreviousLeftFakeSpell = none
+		elseif akBaseObject == myself.GetEquippedObject(1)
+			PreviousRightFakeSpell = none
+		endif
 		return
 	endif
 
@@ -35,17 +43,23 @@ Event OnObjectEquipped(Form akBaseObject, ObjectReference akReference)
 		return
 	endif
 
-	Actor myself = self.GetReference() as Actor
+	Actor myself = self.GetActorReference()
 	
-	if myself.GetEquippedSpell(0) == theSpell && leftActor != none
+	if leftActor != none && theSpell == myself.GetEquippedSpell(0)
 		Spell fakeSpell = AllylinkScriptExtender.GetFakeSpell(theSpell, -1)
-		if fakeSpell
+		if fakeSpell != PreviousLeftFakeSpell
+			PreviousLeftFakeSpell = fakeSpell
 			myself.EquipSpell(fakeSpell, 0)
+		else
+			PreviousLeftFakeSpell = none
 		endif
-	elseif myself.GetEquippedSpell(1) == theSpell && rightActor != none
+	elseif rightActor != none && theSpell == myself.GetEquippedSpell(1)
 		Spell fakeSpell = AllylinkScriptExtender.GetFakeSpell(theSpell, 1)
-		if fakeSpell
+		if fakeSpell != PreviousRightFakeSpell
+			PreviousRightFakeSpell = fakeSpell
 			myself.EquipSpell(fakeSpell, 1)
+		else
+			PreviousRightFakeSpell = none
 		endif
 	endIf
 endEvent
