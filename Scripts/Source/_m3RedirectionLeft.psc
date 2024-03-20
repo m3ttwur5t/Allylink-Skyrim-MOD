@@ -19,7 +19,6 @@ Event OnEffectStart(Actor akTarget, Actor akCaster)
 		ConsoleUtil.PrintMessage("[Allylink] Deliver " + realSpell.GetName() + " to " + redirTarget.GetActorBase().GetName())
 		realSpell.RemoteCast(akTarget, akTarget, redirTarget)
 	else
-		realSpell.RemoteCast(akTarget, akTarget, akTarget)
-		Debug.Notification("Linked ally is not in range...")
+		Debug.Notification(redirTarget.GetLeveledActorBase().GetName() + " is out of range/view.")
 	endif
 endEvent
