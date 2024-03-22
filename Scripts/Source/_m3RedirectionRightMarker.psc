@@ -9,5 +9,5 @@ Event OnEffectStart(Actor akTarget, Actor akCaster)
 		return
 	endif
 	RightAlias.ForceRefTo(akTarget)
-	Debug.Notification(RightAlias.GetActorReference().GetLeveledActorBase().GetName() + " designated as RIGHT target.")
+	Debug.Notification("Spells cast from your right hand will be redirected to " + RightAlias.GetActorReference().GetLeveledActorBase().GetName())
 endEvent
