@@ -16,7 +16,7 @@ Event OnEffectStart(Actor akTarget, Actor akCaster)
 	Actor redirTarget = LeftAlias.GetActorReference()
 
 	if redirTarget && akTarget.GetDistance(redirTarget) <= 1024 && akTarget.HasLOS(redirTarget)
-		ConsoleUtil.PrintMessage("[Allylink] Deliver " + realSpell.GetName() + " to " + redirTarget.GetActorBase().GetName())
+		;ConsoleUtil.PrintMessage("[Allylink] Deliver " + realSpell.GetName() + " to " + redirTarget.GetActorBase().GetName())
 		realSpell.RemoteCast(akTarget, akTarget, redirTarget)
 	else
 		Debug.Notification(redirTarget.GetLeveledActorBase().GetName() + " is out of range/view.")
