@@ -1,6 +1,6 @@
-Scriptname _m3RedirectionLeftMarker extends ActiveMagicEffect  
+Scriptname _m3HealerRedirectionLeftMarker extends ActiveMagicEffect  
 
-_m3PlayerAliasMain Property PlayerListenerScript Auto
+_m3HealerPlayerAliasMain Property PlayerListenerScript Auto
 Faction Property CurrentFollowerFaction  Auto  
 ReferenceAlias Property LeftAlias Auto
 

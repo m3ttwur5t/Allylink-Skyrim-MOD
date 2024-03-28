@@ -1,14 +1,14 @@
-Scriptname _m3RedirectionRight extends ActiveMagicEffect  
+Scriptname _m3HealerRedirectionRight extends ActiveMagicEffect  
 
 ReferenceAlias Property RightAlias Auto
 
 Event OnEffectStart(Actor akTarget, Actor akCaster)
-	Spell fakeSpell = AllylinkScriptExtender.WhichSpellCastMe(self)
+	Spell fakeSpell = EmpathicLinkScriptExtender.GetSourceSpell(self)
 	if !fakeSpell
 		return
 	endif
 	
-	Spell realSpell = AllylinkScriptExtender.GetRealSpell(fakeSpell)
+	Spell realSpell = EmpathicLinkScriptExtender.GetRealSpell(fakeSpell)
 	if !realSpell
 		return
 	endif

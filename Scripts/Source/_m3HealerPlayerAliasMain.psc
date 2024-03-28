@@ -1,4 +1,4 @@
-Scriptname _m3PlayerAliasMain extends ReferenceAlias  
+Scriptname _m3HealerPlayerAliasMain extends ReferenceAlias  
 
 Keyword Property FakeSpellKeywordFF Auto
 
@@ -30,7 +30,7 @@ State Running
 	Event OnBeginState()
 		Myself = self.GetActorReference()
 		self.GetActorReference().AddPerk(NullifierPerk)
-		ConsoleUtil.PrintMessage("Allylink Listener Activated")
+		ConsoleUtil.PrintMessage("Empathic Link: Active")
 	EndEvent
 	
 	Event OnEndState()
@@ -39,7 +39,7 @@ State Running
 		LeftRefAlias.Clear()
 		RightRefAlias.Clear()
 		self.GetActorReference().RemovePerk(NullifierPerk)
-		ConsoleUtil.PrintMessage("Allylink Listener Stopped")
+		ConsoleUtil.PrintMessage("Empathic Link: Inactive")
 	EndEvent
 
 	Event OnUpdate()
@@ -69,23 +69,24 @@ State Running
 		Actor leftActor  = LeftRefAlias.GetActorReference()
 		Actor rightActor = RightRefAlias.GetActorReference()
 
-		if !leftActor && !rightActor
-			DeactivateListener()
-			return
-		endif
-
 		if theSpell == LeftMarkerSpell && leftActor 
-			Debug.Notification(leftActor.GetLeveledActorBase().GetName() + " lost Empathic Embrace (Left).")
+			Debug.Notification(leftActor.GetLeveledActorBase().GetName() + " lost Empathic Link (Left).")
 			LeftRefAlias.Clear()
+			if !rightActor
+				DeactivateListener()
+			endif
 			return
 		elseif theSpell == RightMarkerSpell && rightActor 
-			Debug.Notification(rightActor.GetLeveledActorBase().GetName() + " lost Empathic Embrace (Right).")
+			Debug.Notification(rightActor.GetLeveledActorBase().GetName() + " lost Empathic Link (Right).")
 			RightRefAlias.Clear()
+			if !leftActor
+				DeactivateListener()
+			endif
 			return
 		endif
 
 		if leftActor != none && theSpell == Myself.GetEquippedSpell(0)
-			Spell fakeSpell = AllylinkScriptExtender.GetFakeSpell(theSpell, -1)
+			Spell fakeSpell = EmpathicLinkScriptExtender.GetFakeSpell(theSpell, -1)
 			if fakeSpell != PreviousLeftFakeSpell
 				PreviousLeftFakeSpell = fakeSpell
 				Myself.EquipSpell(fakeSpell, 0)
@@ -93,7 +94,7 @@ State Running
 				PreviousLeftFakeSpell = none
 			endif
 		elseif rightActor != none && theSpell == Myself.GetEquippedSpell(1)
-			Spell fakeSpell = AllylinkScriptExtender.GetFakeSpell(theSpell, 1)
+			Spell fakeSpell = EmpathicLinkScriptExtender.GetFakeSpell(theSpell, 1)
 			if fakeSpell != PreviousRightFakeSpell
 				PreviousRightFakeSpell = fakeSpell
 				Myself.EquipSpell(fakeSpell, 1)
